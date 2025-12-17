@@ -43,10 +43,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       onPressed: () async {
                         if (!_formKey.currentState!.validate()) return;
 
+                        final messenger = ScaffoldMessenger.of(context);
+
                         try {
                           final ok = await authC.resetPassword(_email.text.trim());
                           if (ok) {
-                            ScaffoldMessenger.of(context).showSnackBar(
+                            messenger.showSnackBar(
                               const SnackBar(content: Text("Reset email sent")),
                             );
                           }

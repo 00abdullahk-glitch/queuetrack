@@ -26,6 +26,9 @@ class _UniversalQueuePageState extends State<UniversalQueuePage> {
     final uid = authC.user.value?.uid;
     if (uid != null) {
       _sub = _repo.streamUserToken(uid).listen((t) {
+        // ensure widget still mounted when async stream events arrive
+        if (!mounted) return;
+
         // show in-app notifications when status changes
         if (_myToken == null && t != null) {
           // new token assigned
@@ -37,6 +40,7 @@ class _UniversalQueuePageState extends State<UniversalQueuePage> {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Your token #${t.number} is finished')));
           }
         }
+        if (!mounted) return;
         setState(() => _myToken = t);
       });
     }
@@ -54,9 +58,11 @@ class _UniversalQueuePageState extends State<UniversalQueuePage> {
     try {
       final res = await _repo.createToken(uid: uid, userEmail: email);
       final num = res['number'];
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Token #$num created')));
     } catch (e) {
       Get.log('createToken error: $e');
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Could not create token')));
     }
   }

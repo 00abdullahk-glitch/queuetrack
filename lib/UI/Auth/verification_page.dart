@@ -31,9 +31,10 @@ class VerificationScreen extends StatelessWidget {
               onPressed: () async {
                 await authC.reloadUser();
                 if (authC.emailVerified) {
-                  Get.offAllNamed('/home');
+                  // After verification send user to dashboard to access queue features
+                  Get.offAllNamed('/dashboard');
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Email not verified yet')));
+                  Get.snackbar('Verification', 'Email not verified yet');
                 }
               },
               child: const Text('I have verified — Continue'),

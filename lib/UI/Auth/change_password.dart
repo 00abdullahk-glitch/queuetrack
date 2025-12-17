@@ -54,10 +54,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       onPressed: () async {
                         if (!_formKey.currentState!.validate()) return;
 
+                        final messenger = ScaffoldMessenger.of(context);
+
                         try {
                           final ok = await authC.changePassword(oldPw.text, newPw.text);
                           if (ok) {
-                            ScaffoldMessenger.of(context).showSnackBar(
+                            messenger.showSnackBar(
                               const SnackBar(content: Text('Password changed successfully')),
                             );
                           }

@@ -57,7 +57,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         await authC.reloadUser();
                         if (authC.emailVerified) {
-                          Get.offAllNamed('/home');
+                          // Take verified users to the dashboard so they can access queue features
+                          Get.offAllNamed('/dashboard');
                         } else {
                           Get.offAllNamed('/verify');
                         }
